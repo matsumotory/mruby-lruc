@@ -72,6 +72,7 @@ static mrb_value mrb_lruc_set(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "oo", &key, &val);
 
+  /* must allcate new heap for key and value since those varaibles  were freed by internal lurc later. */
   if (lruc_set(data->cache, strdup(RSTRING_PTR(key)), RSTRING_LEN(key), strdup(RSTRING_PTR(val)), RSTRING_LEN(val))) {
     mrb_raise(mrb, E_RUNTIME_ERROR, "lruc_set failed");
   }
