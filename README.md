@@ -13,13 +13,11 @@ end
 ```
 ## example
 ```ruby
-p LRUC.hi
-#=> "hi!!"
-t = LRUC.new "hello"
-p t.hello
-#=> "hello"
-p t.bye
-#=> "hello bye"
+assert("LRUC#set/get") do
+  l = LRUC.new 1024, 1024
+  l.set "hoge", "fuga"
+  assert_equal("fuga", l.get("hoge"))
+end
 ```
 
 ## License
