@@ -17,31 +17,29 @@ typedef enum {
   LRUC_VALUE_TOO_LARGE
 } lruc_error;
 
-
 // ------------------------------------------
 // types
 // ------------------------------------------
 typedef struct {
-  void      *value;
-  void      *key;
-  uint32_t  value_length;
-  uint32_t  key_length;
-  uint64_t  access_count;
-  void      *next;
+  void *value;
+  void *key;
+  uint32_t value_length;
+  uint32_t key_length;
+  uint64_t access_count;
+  void *next;
 } lruc_item;
 
 typedef struct {
   lruc_item **items;
-  uint64_t  access_count;
-  uint64_t  free_memory;
-  uint64_t  total_memory;
-  uint64_t  average_item_length;
-  uint32_t  hash_table_size;
-  time_t    seed;
+  uint64_t access_count;
+  uint64_t free_memory;
+  uint64_t total_memory;
+  uint64_t average_item_length;
+  uint32_t hash_table_size;
+  time_t seed;
   lruc_item *free_items;
   pthread_mutex_t *mutex;
 } lruc;
-
 
 // ------------------------------------------
 // api
