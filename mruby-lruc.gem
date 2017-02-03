@@ -1,5 +1,5 @@
 name: mruby-lruc
-description: LRUC class
+description: Least Recently Used(LRU) cache using lruc
 author: MATSUMOTO Ryosuke
 website: https://github.com/matsumotory/mruby-lruc
 protocol: git
