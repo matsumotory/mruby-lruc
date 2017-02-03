@@ -1,6 +1,0 @@
-name: mruby-lruc
-description: Least Recently Used(LRU) cache using lruc
-author: MATSUMOTO Ryosuke
-website: https://github.com/matsumotory/mruby-lruc
-protocol: git
-repository: https://github.com/matsumotory/mruby-lruc.git
