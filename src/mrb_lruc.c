@@ -120,6 +120,30 @@ static mrb_value mrb_lruc_free(mrb_state *mrb, mrb_value self)
   return mrb_nil_value();
 }
 
+static mrb_value mrb_lruc_total_memory(mrb_state *mrb, mrb_value self)
+{
+  mrb_lruc_data *data = DATA_PTR(self);
+  return mrb_float_value(mrb, data->cache->total_memory);
+}
+
+static mrb_value mrb_lruc_free_memory(mrb_state *mrb, mrb_value self)
+{
+  mrb_lruc_data *data = DATA_PTR(self);
+  return mrb_float_value(mrb, data->cache->free_memory);
+}
+
+static mrb_value mrb_lruc_average_item_length(mrb_state *mrb, mrb_value self)
+{
+  mrb_lruc_data *data = DATA_PTR(self);
+  return mrb_float_value(mrb, data->cache->average_item_length);
+}
+
+static mrb_value mrb_lruc_access_count(mrb_state *mrb, mrb_value self)
+{
+  mrb_lruc_data *data = DATA_PTR(self);
+  return mrb_float_value(mrb, data->cache->access_count);
+}
+
 void mrb_mruby_lruc_gem_init(mrb_state *mrb)
 {
   struct RClass *lruc;
@@ -133,6 +157,10 @@ void mrb_mruby_lruc_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, lruc, "[]", mrb_lruc_get, MRB_ARGS_REQ(1));
   mrb_define_method(mrb, lruc, "delete", mrb_lruc_delete, MRB_ARGS_REQ(1));
   mrb_define_method(mrb, lruc, "free", mrb_lruc_free, MRB_ARGS_NONE());
+  mrb_define_method(mrb, lruc, "total_memory", mrb_lruc_total_memory, MRB_ARGS_NONE());
+  mrb_define_method(mrb, lruc, "free_memory", mrb_lruc_free_memory, MRB_ARGS_NONE());
+  mrb_define_method(mrb, lruc, "average_item_length", mrb_lruc_average_item_length, MRB_ARGS_NONE());
+  mrb_define_method(mrb, lruc, "access_count", mrb_lruc_access_count, MRB_ARGS_NONE());
   DONE;
 }
 
