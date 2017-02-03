@@ -89,7 +89,7 @@ static mrb_value mrb_lruc_get(mrb_state *mrb, mrb_value self)
 
   lruc_get(data->cache, RSTRING_PTR(key), RSTRING_LEN(key), (void **)(&val));
 
-  return mrb_str_new_cstr(mrb, val);
+  return (val) ? mrb_str_new_cstr(mrb, val) : mrb_nil_value();
 }
 
 static mrb_value mrb_lruc_delete(mrb_state *mrb, mrb_value self)
