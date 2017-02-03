@@ -1,5 +1,7 @@
 # mruby-lruc   [![Build Status](https://travis-ci.org/matsumotory/mruby-lruc.svg?branch=master)](https://travis-ci.org/matsumotory/mruby-lruc)
-LRUC class
+
+Least Recently Used(LRU) cache using [lruc](https://github.com/willcannings/C-LRU-Cache)
+
 ## install by mrbgems
 - add conf.gem line to `build_config.rb`
 
