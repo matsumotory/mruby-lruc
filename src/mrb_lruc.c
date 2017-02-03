@@ -9,9 +9,9 @@
 #include <string.h>
 
 #include "mruby.h"
-#include "mruby/string.h"
-#include "mruby/data.h"
 #include "mruby/class.h"
+#include "mruby/data.h"
+#include "mruby/string.h"
 
 /* refs: https://github.com/willcannings/C-LRU-Cache.git */
 #include "lruc.h"
@@ -34,7 +34,7 @@ static void mrb_lruc_data_free(mrb_state *mrb, void *p)
 }
 
 static const struct mrb_data_type mrb_lruc_data_type = {
-  "mrb_lruc_data", mrb_lruc_data_free,
+    "mrb_lruc_data", mrb_lruc_data_free,
 };
 
 static mrb_value mrb_lruc_init(mrb_state *mrb, mrb_value self)
@@ -72,7 +72,7 @@ static mrb_value mrb_lruc_set(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "oo", &key, &val);
 
-  if(lruc_set(data->cache, strdup(RSTRING_PTR(key)), RSTRING_LEN(key), strdup(RSTRING_PTR(val)), RSTRING_LEN(val))) {
+  if (lruc_set(data->cache, strdup(RSTRING_PTR(key)), RSTRING_LEN(key), strdup(RSTRING_PTR(val)), RSTRING_LEN(val))) {
     mrb_raise(mrb, E_RUNTIME_ERROR, "lruc_set failed");
   }
 
@@ -138,4 +138,3 @@ void mrb_mruby_lruc_gem_init(mrb_state *mrb)
 void mrb_mruby_lruc_gem_final(mrb_state *mrb)
 {
 }
-
