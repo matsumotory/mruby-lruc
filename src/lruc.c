@@ -227,6 +227,8 @@ lruc_error lruc_set(lruc *cache, void *key, uint32_t key_length, void *value, ui
     // update the value and value_lengths
     required = value_length - item->value_length;
     free(item->value);
+    /* don't use key in HEAD */
+    free(key);
     item->value = value;
     item->value_length = value_length;
 

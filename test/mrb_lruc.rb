@@ -21,3 +21,12 @@ assert("LRUC#delete") do
   l.delete "hoge"
   assert_nil(l.get("hoge"))
 end
+
+assert("LRUC#set") do
+  l = LRUC.new 1024, 1024
+  10000.times do
+    l.set "hoge", "fuga"
+    assert_equal("fuga", l.get("hoge"))
+  end
+end
+
