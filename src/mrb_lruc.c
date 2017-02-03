@@ -24,11 +24,13 @@ typedef struct {
 
 static void mrb_lruc_data_free(mrb_state *mrb, void *p)
 {
-  lruc *cache = (lruc *)p;
+  mrb_lruc_data *data = (mrb_lruc_data *)p;
 
-  if (lruc_free(cache)) {
+  if (data->cache && lruc_free(data->cache)) {
     mrb_raise(mrb, E_RUNTIME_ERROR, "lruc_free failed");
   }
+
+  mrb_free(mrb, data);
 }
 
 static const struct mrb_data_type mrb_lruc_data_type = {
@@ -104,6 +106,19 @@ static mrb_value mrb_lruc_delete(mrb_state *mrb, mrb_value self)
   return key;
 }
 
+static mrb_value mrb_lruc_free(mrb_state *mrb, mrb_value self)
+{
+  mrb_lruc_data *data = DATA_PTR(self);
+
+  if (data->cache && lruc_free(data->cache)) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc_delete failed");
+  }
+
+  data->cache = NULL;
+
+  return mrb_nil_value();
+}
+
 void mrb_mruby_lruc_gem_init(mrb_state *mrb)
 {
   struct RClass *lruc;
@@ -116,6 +131,7 @@ void mrb_mruby_lruc_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, lruc, "get", mrb_lruc_get, MRB_ARGS_REQ(1));
   mrb_define_method(mrb, lruc, "[]", mrb_lruc_get, MRB_ARGS_REQ(1));
   mrb_define_method(mrb, lruc, "delete", mrb_lruc_delete, MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, lruc, "free", mrb_lruc_free, MRB_ARGS_NONE());
   DONE;
 }
 
