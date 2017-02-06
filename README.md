@@ -10,7 +10,7 @@ MRuby::Build.new do |conf|
 
     # ... (snip) ...
 
-    conf.gem :github => 'matsumotory/mruby-lruc'
+    conf.gem :mgem => 'mruby-lruc'
 end
 ```
 ## example
