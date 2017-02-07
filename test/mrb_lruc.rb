@@ -54,3 +54,10 @@ assert("LRUC#access_count") do
   assert_equal(20000, l.access_count)
 end
 
+assert('LRUC#{new,free}') do
+  10000.times do
+    l = LRUC.new 1024, 1024
+    l.set "hoge", "fuga"
+    assert_nil(l.free)
+  end
+end

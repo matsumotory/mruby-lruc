@@ -26,7 +26,7 @@ static void mrb_lruc_data_free(mrb_state *mrb, void *p)
 {
   mrb_lruc_data *data = (mrb_lruc_data *)p;
 
-  if (data->cache && lruc_free(data->cache)) {
+  if (data && data->cache && lruc_free(data->cache)) {
     mrb_raise(mrb, E_RUNTIME_ERROR, "lruc_free failed");
   }
 
@@ -70,6 +70,10 @@ static mrb_value mrb_lruc_set(mrb_state *mrb, mrb_value self)
   mrb_lruc_data *data = DATA_PTR(self);
   mrb_value key, val;
 
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
+  }
+
   mrb_get_args(mrb, "oo", &key, &val);
 
   /* must allcate new heap for key and value since those varaibles  were freed by internal lurc later. */
@@ -86,6 +90,10 @@ static mrb_value mrb_lruc_get(mrb_state *mrb, mrb_value self)
   mrb_value key;
   char *val;
 
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
+  }
+
   mrb_get_args(mrb, "o", &key);
 
   lruc_get(data->cache, RSTRING_PTR(key), RSTRING_LEN(key), (void **)(&val));
@@ -97,6 +105,10 @@ static mrb_value mrb_lruc_delete(mrb_state *mrb, mrb_value self)
 {
   mrb_lruc_data *data = DATA_PTR(self);
   mrb_value key;
+
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
+  }
 
   mrb_get_args(mrb, "o", &key);
 
@@ -111,11 +123,14 @@ static mrb_value mrb_lruc_free(mrb_state *mrb, mrb_value self)
 {
   mrb_lruc_data *data = DATA_PTR(self);
 
-  if (data->cache && lruc_free(data->cache)) {
-    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc_delete failed");
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
   }
 
-  data->cache = NULL;
+  mrb_lruc_data_free(mrb, (void *)data);
+
+  DATA_PTR(self) = NULL;
+  DATA_TYPE(self) = NULL;
 
   return mrb_nil_value();
 }
@@ -123,24 +138,44 @@ static mrb_value mrb_lruc_free(mrb_state *mrb, mrb_value self)
 static mrb_value mrb_lruc_total_memory(mrb_state *mrb, mrb_value self)
 {
   mrb_lruc_data *data = DATA_PTR(self);
+
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
+  }
+
   return mrb_float_value(mrb, data->cache->total_memory);
 }
 
 static mrb_value mrb_lruc_free_memory(mrb_state *mrb, mrb_value self)
 {
   mrb_lruc_data *data = DATA_PTR(self);
+
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
+  }
+
   return mrb_float_value(mrb, data->cache->free_memory);
 }
 
 static mrb_value mrb_lruc_average_item_length(mrb_state *mrb, mrb_value self)
 {
   mrb_lruc_data *data = DATA_PTR(self);
+
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
+  }
+
   return mrb_float_value(mrb, data->cache->average_item_length);
 }
 
 static mrb_value mrb_lruc_access_count(mrb_state *mrb, mrb_value self)
 {
   mrb_lruc_data *data = DATA_PTR(self);
+
+  if (data == NULL) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "lruc instance already freed via LRUC#free");
+  }
+
   return mrb_float_value(mrb, data->cache->access_count);
 }
 
