@@ -199,6 +199,7 @@ lruc_error lruc_free(lruc *cache)
       perror("LRU Cache unable to destroy mutex");
       return LRUC_PTHREAD_ERROR;
     }
+    free(cache->mutex);
   }
   free(cache);
 
