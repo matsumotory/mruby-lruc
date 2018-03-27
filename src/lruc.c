@@ -186,6 +186,8 @@ lruc_error lruc_free(lruc *cache)
       item = cache->items[i];
       while (item) {
         next = (lruc_item *)item->next;
+        free(item->key);
+        free(item->value);
         free(item);
         item = next;
       }
